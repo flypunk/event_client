@@ -1,5 +1,7 @@
 A page that shows and searches between a facebook event attendees.
 
+The react code is based on https://facebook.github.io/react/docs/tutorial.html
+
 Should be served over http (not file://) protocol.
 
 ToDo:
