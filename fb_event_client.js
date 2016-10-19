@@ -31,7 +31,6 @@ var EventBox = React.createClass({
       // for FB.getLoginStatus().
       if (response.status === 'connected') {
         // Logged into your app and Facebook.
-        //testAPI();
         getEvent(308852546147336);
       } else if (response.status === 'not_authorized') {
         // The person is logged into Facebook, but not your app.
@@ -55,8 +54,6 @@ var EventBox = React.createClass({
       FB.api('/' + event_id + '/attending', function(response) {
       console.log(response.data);
       //console.log(response.paging);
-      //document.getElementById('event').innerHTML =
-      //  'Thanks for visiting  ' + response.data;
       });
     }
  
