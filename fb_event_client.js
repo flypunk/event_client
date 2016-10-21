@@ -18,20 +18,20 @@ var EventBox = React.createClass({
       {id: 2, name: "Jordan Walke"}
     ];
 
-    // return {data: []}
-    return {data: data}
+     return {data: []}
+    //return {data: data}
   },
   componentDidMount: function() {
+    var self = this;
     function statusChangeCallback(response) {
-      // console.log('statusChangeCallback');
-      // console.log(response);
       // The response object is returned with a status field that lets the
       // app know the current login status of the person.
       // Full docs on the response object can be found in the documentation
       // for FB.getLoginStatus().
       if (response.status === 'connected') {
         // Logged into your app and Facebook.
-        getEvent(308852546147336);
+        
+        getEvent(526670907530796); // Sets self.state.data to its response
       } else if (response.status === 'not_authorized') {
         // The person is logged into Facebook, but not your app.
         document.getElementById('status').innerHTML = 'Please log ' +
@@ -52,8 +52,9 @@ var EventBox = React.createClass({
 
     function getEvent(event_id) {
       FB.api('/' + event_id + '/attending', function(response) {
-      console.log(response.data);
+      // console.log(response.data);
       //console.log(response.paging);
+      self.setState({data: response.data, paging: response.paging});
       });
     }
  
@@ -86,7 +87,7 @@ var EventBox = React.createClass({
     return (
       <div className="eventBox">
         <h1>Attendees</h1>
-        <PersonList data={this.state.data} />
+        <PersonList data={this.state.data} paging={this.state.paging}/>
       </div>
     );
   }
