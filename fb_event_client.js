@@ -12,6 +12,11 @@ var EventBox = React.createClass({
       }.bind(this)
     });
   },
+  handleEventSubmit: function(eventId) {
+    console.log(eventId);
+    this.setState({eventId: eventId});
+    return(eventId);
+  },
   getInitialState: function() {
     var data = [
       {id: 1, name: "Pete Hunt"},
@@ -30,8 +35,11 @@ var EventBox = React.createClass({
       // for FB.getLoginStatus().
       if (response.status === 'connected') {
         // Logged into your app and Facebook.
-        
-        getEvent(526670907530796); // Sets self.state.data to its response
+        //console.dir(self);
+        //console.log(self.state.data);
+        var eventId = 526670907530796;
+        //console.dir(window.ReactRouter);
+        getEvent(eventId); // Sets self.state.data to its response
       } else if (response.status === 'not_authorized') {
         // The person is logged into Facebook, but not your app.
         document.getElementById('status').innerHTML = 'Please log ' +
@@ -50,8 +58,8 @@ var EventBox = React.createClass({
       });
     ;}
 
-    function getEvent(event_id) {
-      FB.api('/' + event_id + '/attending', function(response) {
+    function getEvent(eventId) {
+      FB.api('/' + eventId + '/attending', function(response) {
       // console.log(response.data);
       //console.log(response.paging);
       self.setState({data: response.data, paging: response.paging});
@@ -86,6 +94,7 @@ var EventBox = React.createClass({
   render: function() {
     return (
       <div className="eventBox">
+        <EventForm onEventSubmit={this.handleEventSubmit} />
         <h1>Attendees</h1>
         <PersonList data={this.state.data} paging={this.state.paging}/>
       </div>
@@ -93,6 +102,36 @@ var EventBox = React.createClass({
   }
 });
 
+var EventForm = React.createClass({
+  getInitialState: function() {
+    return {eventId: ''};
+  },
+  handleEventChange: function(e) {
+    this.setState({eventId: e.target.value});
+  },
+  handleSubmit: function(e) {
+    e.preventDefault();
+    var eventId = this.state.eventId.trim();
+    if (!eventId) {
+      return;
+    }
+    this.props.onEventSubmit(eventId);
+    this.setState({eventId: ''});
+  },
+  render: function() {
+    return (
+      <form className="eventForm" onSubmit={this.handleSubmit}>
+        <input
+          type="text"
+          placeholder="Event ID"
+          value={this.state.eventId}
+          onChange={this.handleEventChange}
+        />
+        <input type="submit" value="EventId" />
+      </form>
+    );
+  },
+});
 
 var PersonList = React.createClass({
   render: function() {
